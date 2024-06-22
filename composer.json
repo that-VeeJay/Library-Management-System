@@ -1,0 +1,15 @@
+{
+    "name": "veeja/lms",
+    "autoload": {
+        "psr-4": {
+            "classes\\": "classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vee Jay",
+            "email": "veejay.programming@gmail.com"
+        }
+    ],
+    "require": {}
+}

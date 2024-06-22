@@ -1,4 +1,19 @@
-<?php include(__DIR__ . '/templates/union/header.php') ?>
+<?php
+include(__DIR__ . '/templates/union/header.php');
+
+require_once "vendor/autoload.php";
+
+$register = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
+
+    $register = new classes\authentication\Register($username, $email, $password, $confirmPassword);
+}
+?>
 
 <body>
     <div class="container full-height">
@@ -7,6 +22,9 @@
                 Registration
             </div>
             <hr>
+
+            <?php ($register instanceof classes\authentication\Register) ? $register->displayMessages() : '' ?>
+
             <form class="form-inline" action="#" method="post">
                 <div class="vstack gap-2">
                     <!-- Username -->
@@ -27,7 +45,7 @@
                     <!-- Confirm Password -->
                     <div class="input-group mb-2">
                         <span class="input-group-text fa fa-key pt-2"></span>
-                        <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" name="confirm_password" required>
+                        <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" name="confirmPassword" required>
                     </div>
                     <!-- Register Button -->
                     <div class="d-grid gap-2 mt-0 mb-2">

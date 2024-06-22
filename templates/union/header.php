@@ -12,6 +12,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/login-signup.css">
     <!-- Custom Javascript -->
-    <script src="js/script.js" defer></script>
+    <script src="js/script.js"></script>
     <title>Register</title>
 </head>
