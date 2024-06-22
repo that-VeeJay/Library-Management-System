@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace classes\authentication;
 
 use classes\core\Database;
+use PDOException;
 
 class Register extends Database
 {
@@ -32,11 +33,15 @@ class Register extends Database
      */
     private function isEmailDuplicate(): bool
     {
-        $query = "SELECT email FROM users WHERE email = :email";
-        $stmt = Database::connection()->prepare($query);
-        $stmt->execute([':email' => $this->email]);
-        $email = $stmt->fetchColumn();
-        return ($email !== false);
+        try {
+            $query = "SELECT email FROM users WHERE email = :email";
+            $stmt = Database::connection()->prepare($query);
+            $stmt->execute([':email' => $this->email]);
+            $email = $stmt->fetchColumn();
+            return ($email !== false);
+        } catch (PDOException $e) {
+            echo 'Connection error: ' . $e->getMessage();
+        }
     }
 
     /**
@@ -118,19 +123,24 @@ class Register extends Database
     }
 
     /**
-     * The function `registerUser` inserts user data into a database table named `users`.
+     * The function `registerUser` inserts user data into a database table using prepared statements in
+     * PHP.
      */
     private function registerUser(): void
     {
-        $query = "INSERT INTO users (member_id, username, email, password) VALUES (:member_id, :username, :email, :password);";
-        $stmt = Database::connection()->prepare($query);
-        $data = [
-            ':member_id' => $this->memberID(),
-            ':username' => $this->username,
-            ':email' => $this->email,
-            ':password' => $this->hashPassword(),
-        ];
-        $stmt->execute($data);
+        try {
+            $query = "INSERT INTO users (member_id, username, email, password) VALUES (:member_id, :username, :email, :password);";
+            $stmt = Database::connection()->prepare($query);
+            $data = [
+                ':member_id' => $this->memberID(),
+                ':username' => $this->username,
+                ':email' => $this->email,
+                ':password' => $this->hashPassword(),
+            ];
+            $stmt->execute($data);
+        } catch (PDOException $e) {
+            echo 'Connection error: ' . $e->getMessage();
+        }
     }
 
     /**

@@ -1,4 +1,19 @@
-<?php include(__DIR__ . '/templates/union/header.php') ?>
+<?php
+include(__DIR__ . '/templates/union/header.php');
+
+require_once "vendor/autoload.php";
+
+$login = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $login = new \classes\authentication\Login($email, $password);
+}
+
+
+?>
 
 <body>
     <div class="container full-height">
@@ -7,6 +22,9 @@
                 Login
             </div>
             <hr>
+
+            <?php ($login instanceof classes\authentication\Login) ? $login->loginUser() : '' ?>
+
             <form class="form-inline" action="#" method="post">
                 <div class="vstack gap-2">
                     <!-- Email -->
